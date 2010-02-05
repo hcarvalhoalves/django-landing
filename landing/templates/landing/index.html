@@ -1,0 +1,28 @@
+{% extends "landing/base.html" %}
+
+{% block title %}
+    {{ block.super }}Index
+{% endblock %}
+
+{% block header %}
+    {{ block.super }}
+    <h4>Index</h4>
+{% endblock %}
+
+{% block content %}
+    <h2>Metrics available for <strong>{{ site }}</strong>:</h2>
+    <dl>
+    {% for metric in metrics %}
+        <dt><a href="{{ metric.get_absolute_url }}">{{ metric }}</a> ({{ metric.enabled|yesno:"Enabled,Disabled" }})</dt>
+        <dd>{{ metric.description }}<br/>
+            <cite>
+                {% if metric.participants %}
+                    {{ metric.conversions }} conversions in a total of {{ metric.participants }} participants.<br/>
+                {% else %}
+                    No participants so far.
+                {% endif %}
+            </cite>
+        </dd>
+    {% endfor %}
+    </dl>
+{% endblock %}

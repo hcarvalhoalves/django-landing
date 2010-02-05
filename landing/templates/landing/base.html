@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}Landing - {% endblock %}</title>
+        <style>
+            body {
+                font-family: 'Georgia', serif;
+                line-height: 1.5em;
+                color: #222;
+            }
+            h1, h2, h3, h4, h5, dt, table {
+                font-family: 'Helvetica Neue', 'Helvetica', sans-serif;
+                margin: 1em 0;
+            }
+            h2, h3 {
+                font-weight: normal;
+            }
+            a {
+                color: #090;
+                text-decoration: none;
+            }
+            a:hover {
+                color: #0c0;
+                border-bottom: 1px #0c0 dashed;
+            }
+            cite {
+                color: #666;
+                font-style: normal;
+                font-size: 0.9em;
+            }
+            cite:before {
+                content: "> ";
+            }
+            code {
+                font-weight: normal;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 0.9em;
+                margin: 2em 0;
+            }
+            th {
+                text-align: left;
+            }
+            td {
+                padding: 0.5em 0.25em;
+                border-bottom: 1px solid #ddd;
+            }
+            thead {
+                border-bottom: 1px dashed #aaa;
+            }
+            .spacious {
+                width: 25%;
+            }
+            .choice {
+                background: #efe;
+                font-weight: bold;
+            }
+            .graph {
+                display: inline-block;
+                text-align: center;
+            }
+            .graph img {
+                display: block;
+                margin: 1em 0;
+            }
+            h1 {
+                display: inline;
+            }
+            h4 {
+                color: #ccc;
+                font-weight: normal;
+                margin: 0 0.5em;
+                display: inline;
+            }
+            h4:before {
+                content: "> ";
+            }
+            #wrapper {
+                margin: 0 auto;
+                width: 790px;
+            }
+            #header {
+                border-bottom: #ddd dashed 1px;
+                padding: 1em 0;
+            }
+            #footer {
+                color: #aaa;
+                border-top: #ddd dashed 1px;
+                font-size: 0.85em;
+                margin: 3em 0;
+                padding: 1em 0;
+            }
+        </style>
+    </head>
+    <body>
+        {% block body %}
+        <div id="wrapper">
+
+            <div id="header">
+            {% block header %}
+                <h1>Landing</h1>
+            {% endblock %}
+            </div>
+
+            {% block content %}
+            {% endblock %}
+
+            <p id="footer">
+            {% block footer %}
+                Landing, a simple A/B testing application for Django<br/>
+                Inspired by <a href="http://vanity.labnotes.org">Vanity</a> for Rails
+            {% endblock %}
+            </p>
+        </div>
+        {% endblock %}
+    </body>
+</html>

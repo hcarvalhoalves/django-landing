@@ -1,0 +1,54 @@
+{% extends "landing/base.html" %}
+
+{% block title %}
+    {{ block.super }}Report for {{ metric }}
+{% endblock %}
+
+{% block header %}
+    {{ block.super }}
+    <h4>Report</h4>
+{% endblock %}
+
+{% block content %}
+    <h2>{{ metric }} <small>({{ metric.enabled|yesno:"Enabled,Disabled" }})</small></h2>
+    <p>{{ metric.description }}</p>
+    <table>
+        <thead>
+            <th></th>
+            <th class="spacious"></th>
+            <th>Participants</th>
+            <th>Conversions</th>
+            <th>Conv. Rate</th>
+        </thead>
+        <tbody>
+        {% for option in metric.option_set.all %}
+            <tr {% ifequal option metric.best %}class="choice"{% endifequal %}>
+                <td>{{ option }}:</td>
+                <td><code>{{ option.value }}</code></td>
+                <td>{{ option.participants }}</td>
+                <td>{{ option.conversions }}</td>
+                <td>
+                    {{ option.conversion_percent|floatformat:2 }}%
+                    {% ifnotequal option metric.base %}
+                        ({{ option.relative_conversion_percent|floatformat:2 }}% better than {{ metric.base }})
+                    {% endifnotequal %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <p>
+        {% if metric.choice %}
+        The best choice is <strong>{{ metric.choice }}</strong>, with a conversion rate of {{ metric.choice.conversion_percent|floatformat:2 }}% (confidence level for this result is {{ metric.choice.probability|floatformat:2 }}%).
+        {% else %}
+        The best choice so far is {{ metric.best }}, with a conversion rate of {{ metric.best.conversion_percent|floatformat:2 }}%. This result is not statistically significant, you should continue the experiment.
+        {% endif %}
+    </p>
+
+    <div class="graph">
+        <img src="http://chart.apis.google.com/chart?cht=bvs&chco=E0FFE0,A0EEA0,80CC80,60AA60,408840,206620&chs=790x200&chd=t:{{ metric.by_period_chart.data }}&chl={{ metric.by_period_chart.labels }}&chdl={{ metric.by_period_chart.legends }}&chdlp=b&chbh=a" />
+        <em>Conversions by Period</em>
+    </div>
+
+{% endblock %}
