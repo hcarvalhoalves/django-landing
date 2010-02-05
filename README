@@ -65,40 +65,41 @@ prefer to keep it in the code so you can version control it.
 
 If the `request.tracking` object is present, it means we were able to track
 a visitor (cookies enabled), and also able to assign a random option to him.
-It's present at `request.tracking.option`. In subsequent requests, this visitor
-you consistently be assigned the same option, a requirement to do A/B tests
-correctly.
+It's present at `request.tracking.option`. For the next requests, this visitor
+will consistently be assigned the same option (until, of course, cookies are
+not valid anymore).
 
-You can from now on branch your code accordingly to which option was assigned.
-Some use cases would include using different form classes, loading different
-templates, or showing different pieces of templates. Be free to play with the
-options.
+Your code can then branch accordingly to each option that was assigned. Some use
+cases would include using different form classes, loading different templates,
+or showing different pieces of a template. It all depends on the variables you
+want to experiment with.
 
-Once your visitor reaches a conversion point in your view (e.g., signup done),
-you track it with:
+Once your visitor reaches a checkpoint in your view (e.g., signup done), you
+track a conversion for it with:
 
     @track(signup_metric)
     def signup(request):
         ...
         if form.is_valid():
-            request.tracking.track()
+            request.tracking.track() # Record a conversion
             ...
 
 That's it. From now on you can check the reports (if following this README,
 it would be available at `/landing/`) and see how your experiment progresses.
-It presents the conversion rates, the best option (according to statistical
-relevance of at least 90%) and also the graph for conversions by period.
+It presents the conversion rates, the best option (with a confidence level of
+at least 90%) and also a graph for conversions by period, so you can see how
+conversions spread during the experiment period and quickly assess any biases.
 
 You can have your code automaticaly use the best option once the experiment
-gets a conclusive solution with something like:
+gets to a conclusive solution with something like:
 
     form_options = {'simple': SimpleForm, 'complete': CompleteForm}
 
     def signup_form(request):
         ...
-        if signup_metric.choice(): # Best statistical relevant option
+        if signup_metric.choice(): # Best, statistical relevant option
             form_class = form_options.get(signup_metric.choice().value)
-            ... # Proceed, now with proven the best form ;)
+            ... # Proceed, now with the proven best form ;)
 
 
 ---
