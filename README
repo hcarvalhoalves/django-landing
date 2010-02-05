@@ -23,7 +23,7 @@ INSTALLED_APPS = (
     'landing',
 )
 
-Landing depends on djabgo.contrib.sessions, so make sure it's there too.
+Landing depends on django.contrib.sessions, so make sure it's there too.
 
 
 * Add the URL routing for reports
@@ -96,8 +96,8 @@ gets a conclusive solution with something like:
 
     def signup_form(request):
         ...
-        if signup_metric.choice: # Best statistical relevant option
-            form_class = form_options.get(signup_metric.choice.value)
+        if signup_metric.choice(): # Best statistical relevant option
+            form_class = form_options.get(signup_metric.choice().value)
             ... # Proceed, now with proven the best form ;)
 
 
