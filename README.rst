@@ -14,7 +14,7 @@ and management alike.
 To setup Landing for you Django project
 ---------------------------------------
 
-- Add to your installed apps on settings.py
+- Add to your installed apps on `settings.py`
 
 ::
 
@@ -24,7 +24,7 @@ To setup Landing for you Django project
         'landing',
     )
 
-Landing depends on django.contrib.sessions, so make sure it's there too.
+Landing depends on `django.contrib.sessions`, so make sure it's there too.
 
 
 - Add the URL routing for reports
@@ -45,7 +45,7 @@ To start using Landing on your project
 
 - Register a new metric you want to track
 
-At any module level code (I recommend the views.py):
+At any module level code (I recommend the `views.py`):
 
 ::
 
@@ -56,8 +56,7 @@ At any module level code (I recommend the views.py):
                                     options=signup_options)
 
 
-The metric could also, in theory, be loaded with fixtures or an admin, but I
-prefer to keep it in the code so you can version control it.
+The metric could also, in theory, be loaded with fixtures or an admin.
 
 
 - Decorate your views for tracking the metric
@@ -92,14 +91,14 @@ track a conversion for it with:
             request.tracking.track() # Record a conversion
             ...
 
-That's it. From now on you can check the reports (if following this README,
+That's it. From now on you can check the reports (if following this `README`,
 it would be available at `/landing/`) and see how your experiment progresses.
 It presents the conversion rates, the best option (with a confidence level of
 at least 90%) and also a graph for conversions by period, so you can see how
 conversions spread during the experiment period and quickly assess any biases.
 
-You can have your code automaticaly use the best option once the experiment
-gets to a conclusive solution with something like:
+As the experiment progresses and reaches to a conclusion, you can have your code
+automaticaly select the optimal choice with something like:
 
 ::
 
