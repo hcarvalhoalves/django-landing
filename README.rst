@@ -1,5 +1,5 @@
 About Landing
----
+=============
 
 Landing is a simple Django application for implementing A/B tests on your site.
 It was heavily inspired by Vanity for Rails, but the implementation is vastly
@@ -11,39 +11,43 @@ reports on-the-fly for each experiment, easy to use by developers, designers
 and management alike.
 
 
-To setup Landing for you Django project:
----
+To setup Landing for you Django project
+---------------------------------------
 
+- Add to your installed apps on settings.py
 
-* Add to your installed apps on settings.py
+::
 
-INSTALLED_APPS = (
-    'django.contrib.sessions',
-    ...
-    'landing',
-)
+    INSTALLED_APPS = (
+        'django.contrib.sessions',
+        ...
+        'landing',
+    )
 
 Landing depends on django.contrib.sessions, so make sure it's there too.
 
 
-* Add the URL routing for reports
+- Add the URL routing for reports
 
-urlpatterns = patterns('',
-    ...
-    (r'^landing/', include('landing.urls')),
-)
+::
+
+    urlpatterns = patterns('',
+        ...
+        (r'^landing/', include('landing.urls')),
+    )
 
 You can also wrap the views in your own views, if you want to protect the
 reports with login. Landing uses only 2 views: `list` and `report`.
 
 
-To start using Landing on your project:
----
+To start using Landing on your project
+--------------------------------------
 
-
-* Register a new metric you want to track
+- Register a new metric you want to track
 
 At any module level code (I recommend the views.py):
+
+::
 
     from landing import register_metric
 
@@ -56,7 +60,9 @@ The metric could also, in theory, be loaded with fixtures or an admin, but I
 prefer to keep it in the code so you can version control it.
 
 
-* Decorate your views for tracking the metric
+- Decorate your views for tracking the metric
+
+::
 
     @track(signup_metric)
     def my_view(request):
@@ -77,6 +83,8 @@ want to experiment with.
 Once your visitor reaches a checkpoint in your view (e.g., signup done), you
 track a conversion for it with:
 
+::
+
     @track(signup_metric)
     def signup(request):
         ...
@@ -93,6 +101,8 @@ conversions spread during the experiment period and quickly assess any biases.
 You can have your code automaticaly use the best option once the experiment
 gets to a conclusive solution with something like:
 
+::
+
     form_options = {'simple': SimpleForm, 'complete': CompleteForm}
 
     def signup_form(request):
@@ -102,12 +112,12 @@ gets to a conclusive solution with something like:
             ... # Proceed, now with the proven best form ;)
 
 
----
+-----
 
 You can learn more about A/B testing and the statistics involved at:
 http://20bits.com/articles/hypothesis-testing-the-basics/
 
-And the original GitHub project page is at:
+The original GitHub project page is at:
 http://github.com/hcarvalhoalves/django-landing
 
 About Vanity, our inspiration source:
