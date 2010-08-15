@@ -66,7 +66,7 @@ class Metric(models.Model):
         return {'data': "|".join(data),
                 'labels': "|".join(labels),
                 'legends': "|".join(legends),
-                'max': max_axis}
+                'max': max_axis * 1.2}
 
     def chart(self):
         timeframe = self.base.timeframe()
