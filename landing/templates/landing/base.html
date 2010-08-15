@@ -4,12 +4,13 @@
         <title>{% block title %}Landing - {% endblock %}</title>
         <style>
             body {
-                font-family: 'Georgia', serif;
-                line-height: 1.5em;
+                font-family: 'Helvetica Neue', 'Helvetica', sans-serif;
+                font-size: 0.9em;
+                line-height: 1.4em;
                 color: #222;
+                background: #fff;
             }
             h1, h2, h3, h4, h5, dt, table {
-                font-family: 'Helvetica Neue', 'Helvetica', sans-serif;
                 margin: 1em 0;
             }
             h2, h3 {
@@ -21,7 +22,7 @@
             }
             a:hover {
                 color: #0c0;
-                border-bottom: 1px #0c0 dashed;
+                border-bottom: 1px #0c0 solid;
             }
             cite {
                 color: #666;
@@ -36,25 +37,27 @@
             }
             table {
                 width: 100%;
-                border-collapse: collapse;
-                font-size: 0.9em;
                 margin: 2em 0;
+                font-size: 0.9em;
+                border-collapse: collapse;
+                border-top: 1px solid #bbb;
+                border-bottom: 1px solid #bbb;
             }
             th {
                 text-align: left;
             }
             td {
                 padding: 0.5em 0.25em;
-                border-bottom: 1px solid #ddd;
+                border-top: 1px solid #ddd;
             }
             thead {
-                border-bottom: 1px dashed #aaa;
+                background: #eee;
             }
             .spacious {
                 width: 25%;
             }
             .choice {
-                background: #efe;
+                background: #cfc;
                 font-weight: bold;
             }
             .graph {
@@ -82,12 +85,12 @@
                 width: 790px;
             }
             #header {
-                border-bottom: #ddd dashed 1px;
+                border-bottom: #bbb solid 1px;
                 padding: 1em 0;
             }
             #footer {
                 color: #aaa;
-                border-top: #ddd dashed 1px;
+                border-top: #bbb solid 1px;
                 font-size: 0.85em;
                 margin: 3em 0;
                 padding: 1em 0;

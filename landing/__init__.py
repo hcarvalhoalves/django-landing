@@ -1,8 +1,8 @@
 from django.utils.hashcompat import md5_constructor
 from landing.models import Metric, Option, TrackRecord
+from time import time
 
-SESSION_HASH = 'tracking_h_'
-SESSION_OPTION = 'tracking_o_'
+RECORD_HASH_PREFIX = 'landing_h_'
 
 def register_metric(name, description='', options=None):
     """
@@ -41,62 +41,61 @@ def register_metric(name, description='', options=None):
 
 class Tracking(object):
     """
-    An object to keep metric data and conversion available to the request. Also
-    knows how to setup a session for itself.
+    Tracks chosen metrics, options and conversions, and keep the data
+    available on the request object.
     """
     def __init__(self, request, metric):
         self.metric = metric
 
         # Keys are kept unique for each metric
-        self.METRIC_HASH = SESSION_HASH + str(metric.pk)
-        self.METRIC_OPTION = SESSION_OPTION + str(metric.pk)
+        self.RECORD_HASH_KEY = RECORD_HASH_PREFIX + str(metric.pk)
+        record_hash = request.session.get(self.RECORD_HASH_KEY, None)
 
-        # This is going to be pretty unique, but still reproducible.
-        if not request.session.get(self.METRIC_HASH):
-            uniqueness = request.META.get('REMOTE_ADDR') + \
-                         request.META.get('HTTP_USER_AGENT') + \
-                         request.META.get('HTTP_REFERER', '')
-            self.hash = md5_constructor(uniqueness).hexdigest()
-            self.option = self.metric.get_random_option()
-            self.setup = False
-
+        # New visitor, select a new hash and option        
+        if not record_hash:
+            self.record = self._set_record(metric)
+            return True
+            
         # Returning visitor
-        else:
-            self.hash = request.session[self.METRIC_HASH]
-            self.option = self._recover_option(request.session[self.METRIC_OPTION])
-            self.setup = True
-
-        # Record a new participant
-        self._record()
+        self.record = self._get_record(record_hash)
+        return False
 
     def __unicode__(self):
         return "[%s] %s for %s" % (self.metric, self.option, self.hash)
 
-    def _recover_option(self, pk):
+    def _set_record(self, metric):
+        option = metric.get_random_option()
+        record = TrackRecord.objects.create(option=option)
+        return record
+
+    def _get_record(self, hash):
         try:
-            return Option.objects.get(pk=pk)
+            return TrackRecord.objects.get(hash=hash)
         except Option.DoesNotExist:
             return None
 
-    def _record(self):
-        record, created = TrackRecord.objects.get_or_create(hash=self.hash,
-                                                            option=self.option)
-        self.record = record
-        return created
+    @property
+    def hash(self):
+        return self.record.hash
+
+    @property
+    def option(self):
+        return self.record.option
 
     def setup_session(self, request):
-        # This metric isn't valid anymore, forget about this session
-        if not self.option:
-            del request.session[self.METRIC_HASH]
-            del request.session[self.METRIC_OPTION]
+        # This metric isn't valid, forget about this session
+        if not self.record:
+            try:
+                del request.session[self.RECORD_HASH_KEY]
+            except KeyError:
+                pass
         else:
-            request.session[self.METRIC_HASH] = self.hash
-            request.session[self.METRIC_OPTION] = self.option.pk
+            request.session[self.RECORD_HASH_KEY] = self.record.hash
         return request
 
     def track(self):
         """
-        Record a conversion. Call this once your visitor arrives successfully
+        Track a conversion. Call this once your visitor arrives successfully
         to a certain checkpoint (e.g.: a signup form conclusion).
         """
         return self.record.track_conversion()

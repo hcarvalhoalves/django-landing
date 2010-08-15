@@ -23,7 +23,6 @@ class track(object):
     def track_request(self, request):
         if self.metric.enabled:
             tracking = Tracking(request, self.metric)
-            if not tracking.setup:
-                request = tracking.setup_session(request)
+            request = tracking.setup_session(request)
             request.tracking = tracking
         return request

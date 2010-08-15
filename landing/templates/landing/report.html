@@ -46,9 +46,10 @@
         {% endif %}
     </p>
 
+    <h3>Conversions by Period</h3>
+    
     <div class="graph">
-        <img src="http://chart.apis.google.com/chart?cht=bvs&chco=E0FFE0,A0EEA0,80CC80,60AA60,408840,206620&chs=790x200&chd=t:{{ metric.by_period_chart.data }}&chl={{ metric.by_period_chart.labels }}&chdl={{ metric.by_period_chart.legends }}&chdlp=b&chbh=a" />
-        <em>Conversions by Period</em>
+        <img src="http://chart.apis.google.com/chart?cht=bvs&chco=E0FFE0,A0EEA0,80CC80,60AA60,408840,206620&chs=880x200&chd=t:{{ metric.by_period_chart.data }}&chds=0,{{ metric.by_period_chart.max }}&chxr=1,0,{{ metric.by_period_chart.max }}&chl={{ metric.by_period_chart.labels }}&chdl={{ metric.by_period_chart.legends }}&chdlp=b&chbh=a&chxt=x,y" />
     </div>
 
 {% endblock %}

@@ -1,23 +1,21 @@
-"""
-This file demonstrates two different styles of tests (one doctest and one
-unittest). These will both pass when you run "manage.py test".
-
-Replace these with more appropriate tests for your application.
-"""
-
 from django.test import TestCase
+from landing import register_metric, Tracking
+from landing.models import Metric, Option, TrackRecord
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.failUnlessEqual(1 + 1, 2)
 
-__test__ = {"doctest": """
-Another way to test that 1 + 1 is equal to 2.
+class MetricTest(TestCase):
 
->>> 1 + 1 == 2
-True
-"""}
+    def setUp(self):
+        self.metric = register_metric('Button Color Influence',
+                                      'Check what users click more.',
+                                      ['banana green', 'golden blue'])
 
+    def test_track_conversions(self):
+        for n in xrange(20):
+            option = self.metric.get_random_option()
+            record = TrackRecord.objects.create(option=option)
+            if n % 2:
+                record.track_conversion()
+
+        self.assertEqual(self.metric.participants, 20)
+        self.assertEqual(self.metric.conversions, 10)

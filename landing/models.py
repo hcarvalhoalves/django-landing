@@ -1,8 +1,10 @@
 from django.db import models
 from django.db.models import permalink
 from datetime import datetime, timedelta
+from uuid import uuid4
 
 Z_SCORES = {2.75: 99.9, 2.26: 99, 1.63: 95, 1.27: 90}
+GRAPH_TIMESLICES = 6
 
 class Metric(models.Model):
     name = models.CharField(max_length=255)
@@ -48,40 +50,32 @@ class Metric(models.Model):
         return None
 
     def _conversion_by_time_chart(self, strftime, **kwargs):
-        total = []
-        legends = []
+        total, legends = [], []
+        graph_max = 0
+
         for o in self.sorted():
             dataset = []
             results, ranges = o.get_records_by_timeslice(**kwargs)
+
             for qs in results:
-                dataset.append("%d" % qs.filter(converted=True).count())
-            total.append(",".join(dataset))
+                dataset.append(qs.filter(converted=True).count())
+
+            set_max = reduce(lambda a, b: a+b, dataset)
+            graph_max = set_max if set_max > graph_max else graph_max
+
+            total.append(",".join((str(i) for i in dataset)))
             legends.append("%s" % o)
-        return {'data': "|".join(total),
-                'labels': "|".join([r.strftime(strftime) for r in ranges]),
-                'legends': "|".join(legends)}
-
-    def _conversion_weekly_chart(self, days=7):
-        return self._conversion_by_time_chart("%x", days=days)
-
-    def _conversion_daily_chart(self, days=1):
-        return self._conversion_by_time_chart("%x", days=days)
-
-    def _conversion_hourly_chart(self, seconds=3600):
-        return self._conversion_by_time_chart("%X", seconds=seconds)
-
-    def _conversion_realtime_chart(self, seconds=1):
-        return self._conversion_by_time_chart("%X", seconds=seconds)
+        return {
+            'data':     "|".join(total),
+            'labels':   "|".join([r.strftime(strftime) for r in ranges]),
+            'legends':  "|".join(legends),
+            'max':      "%d" % graph_max
+        }
 
     def by_period_chart(self):
         timeframe = self.base.timeframe()
-        if timeframe.seconds < 3600:
-            return self._conversion_realtime_chart()
-        if timeframe.days < 1:
-            return self._conversion_hourly_chart()
-        if timeframe.days < 7:
-            return self._conversion_daily_chart()
-        return self._conversion_weekly_chart()
+        seconds = timeframe.seconds / GRAPH_TIMESLICES
+        return self._conversion_by_time_chart("%x %X", seconds=seconds)
 
 
 class Option(models.Model):
@@ -103,23 +97,18 @@ class Option(models.Model):
     def timeframe(self):
         return self.get_last_record() - self.get_first_record()
 
-    def get_records_by_timeslice(self, days=1, seconds=None):
-        results = []
-        ranges = []
+    def get_records_by_timeslice(self, seconds=None):
+        assert seconds > 0
+        results, ranges = [], []
         qs = self.trackrecord_set.all()
         start = self.get_first_record()
-        if days > 0:
-            for d in range(self.timeframe().days/days):
-                end = start + timedelta(days=days)
-                results.append(qs.filter(timestamp__range=[start, end]))
-                ranges.append(start)
-                start = end
-        if seconds > 0:
-            for d in range(self.timeframe().seconds/seconds):
-                end = start + timedelta(seconds=seconds)
-                results.append(qs.filter(timestamp__range=[start, end]))
-                ranges.append(start)
-                start = end
+        rng = self.timeframe().seconds / seconds
+        rng = rng + 1 if rng % 2 else rng
+        for d in xrange(rng):
+            end = start + timedelta(seconds=seconds)
+            results.append(qs.filter(timestamp__range=[start, end]))
+            ranges.append(start)
+            start = end
         return results, ranges
 
     @property
@@ -169,14 +158,19 @@ class Option(models.Model):
 
 
 class TrackRecord(models.Model):
+    hash = models.CharField(max_length=32, primary_key=True)
     option = models.ForeignKey(Option)
-    hash = models.CharField(max_length=32, unique=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     converted = models.BooleanField()
 
     class Meta:
         ordering = ('timestamp',)
 
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.hash = uuid4().hex
+        super(TrackRecord, self).save(*args, **kwargs)
+        
     def __unicode__(self):
         return u"[%s] %s for %s (%s)" % (self.option.metric, self.option,
                                          self.hash, self.timestamp)
