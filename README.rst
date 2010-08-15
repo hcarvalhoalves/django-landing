@@ -2,12 +2,11 @@ About Landing
 =============
 
 Landing is a simple Django application for implementing A/B tests on your site.
-It was heavily inspired by Vanity for Rails, but the implementation is vastly
-different, better suited to how Django apps works.
+The original concept was inspired by Vanity for Rails, but the implementation is different - better suited to how Django apps work.
 
 It can be plugged right into any working Django project, and be used to track
-visitor's conversions according to any aspect of your site. It also generates
-reports on-the-fly for each experiment, easy to use by developers, designers
+visitor's conversions according to any metric you want. It also generates
+on-the-fly reports for each experiment, easy to use by developers, designers
 and management alike.
 
 
@@ -36,8 +35,7 @@ Landing depends on `django.contrib.sessions`, so make sure it's there too.
         (r'^landing/', include('landing.urls')),
     )
 
-You can also wrap the views in your own views, if you want to protect the
-reports with login. Landing uses only 2 views: `list` and `report`.
+You can also wrap the views to protect the reports under a login, use different templates or anything like that. Landing uses only 2 views: `landing.views.list` and `landing.views.report`.
 
 
 To start using Landing on your project
@@ -56,7 +54,7 @@ At any module level code (I recommend the `views.py`):
                                     options=signup_options)
 
 
-The metric could also, in theory, be loaded with fixtures or an admin.
+The metric could also, in theory, be loaded with fixtures or via the admin.
 
 
 - Decorate your views for tracking the metric
@@ -65,12 +63,11 @@ The metric could also, in theory, be loaded with fixtures or an admin.
 
     @track(signup_metric)
     def my_view(request):
-        if request.tracking:
+        if getattr(request, 'tracking', None):
             # Do something with tracking
 
 If the `request.tracking` object is present, it means we were able to track
-a visitor (cookies enabled), and also able to assign a random option to him.
-It's present at `request.tracking.option`. For the next requests, this visitor
+a visitor (cookies enabled), and also able to assign a random option - it's acessible at `request.tracking.option`. For the next requests, this visitor
 will consistently be assigned the same option (until, of course, cookies are
 not valid anymore).
 

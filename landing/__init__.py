@@ -54,11 +54,11 @@ class Tracking(object):
         # New visitor, select a new hash and option        
         if not record_hash:
             self.record = self._set_record(metric)
-            return True
-            
+            self.setup = False
         # Returning visitor
-        self.record = self._get_record(record_hash)
-        return False
+        else:
+            self.record = self._get_record(record_hash)
+            self.setup = True
 
     def __unicode__(self):
         return "[%s] %s for %s" % (self.metric, self.option, self.hash)
@@ -71,7 +71,7 @@ class Tracking(object):
     def _get_record(self, hash):
         try:
             return TrackRecord.objects.get(hash=hash)
-        except Option.DoesNotExist:
+        except TrackRecord.DoesNotExist:
             return None
 
     @property
