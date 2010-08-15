@@ -49,33 +49,29 @@ class Metric(models.Model):
             return self.best()
         return None
 
-    def _conversion_by_time_chart(self, strftime, **kwargs):
-        total, legends = [], []
-        graph_max = 0
+    def _data_by_timeslice(self, strftime, **kwargs):
+        datasets, data, labels, legends = [], [], [], []
 
         for o in self.sorted():
-            dataset = []
             results, ranges = o.get_records_by_timeslice(**kwargs)
-
-            for qs in results:
-                dataset.append(qs.filter(converted=True).count())
-
-            set_max = reduce(lambda a, b: a+b, dataset)
-            graph_max = set_max if set_max > graph_max else graph_max
-
-            total.append(",".join((str(i) for i in dataset)))
+            dataset = [r.filter(converted=True).count() for r in results]
+            labels = [r.strftime(strftime) for r in ranges]
+            
+            datasets.append(dataset)
+            data.append(",".join([str(i) for i in dataset]))
             legends.append("%s" % o)
-        return {
-            'data':     "|".join(total),
-            'labels':   "|".join([r.strftime(strftime) for r in ranges]),
-            'legends':  "|".join(legends),
-            'max':      "%d" % graph_max
-        }
+        
+        max_axis = max((reduce(lambda a,b: a+b, t) for t in zip(*datasets)))
 
-    def by_period_chart(self):
+        return {'data': "|".join(data),
+                'labels': "|".join(labels),
+                'legends': "|".join(legends),
+                'max': max_axis}
+
+    def chart(self):
         timeframe = self.base.timeframe()
         seconds = timeframe.seconds / GRAPH_TIMESLICES
-        return self._conversion_by_time_chart("%x %X", seconds=seconds)
+        return self._data_by_timeslice("%x %X", seconds=seconds)
 
 
 class Option(models.Model):
@@ -150,9 +146,9 @@ class Option(models.Model):
 
     @property
     def probability(self):
-        # Only whitin 90% probability matters
         try:
             return [i[1] for i in Z_SCORES.items() if self.z_score >= i[0]][0]
+        # Only whitin 90% probability matters
         except IndexError:
             return 0.0
 

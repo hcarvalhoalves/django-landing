@@ -25,6 +25,14 @@
         }
     }, 
     {
+        "pk": 3, 
+        "model": "landing.option", 
+        "fields": {
+            "metric": 1, 
+            "value": "pumpikin purple"
+        }
+    }, 
+    {
         "pk": "9eef12f04c81451594d1e50711ecc713", 
         "model": "landing.trackrecord", 
         "fields": {
@@ -48,7 +56,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:22:29", 
             "converted": false, 
-            "option": 1
+            "option": 3
         }
     }, 
     {
@@ -84,7 +92,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:22:37", 
             "converted": true, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -93,7 +101,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:22:38", 
             "converted": false, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -111,7 +119,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:22:43", 
             "converted": false, 
-            "option": 1
+            "option": 3
         }
     }, 
     {
@@ -129,7 +137,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:22:48", 
             "converted": true, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -174,7 +182,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:22:57", 
             "converted": true, 
-            "option": 1
+            "option": 3
         }
     }, 
     {
@@ -183,7 +191,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:22:58", 
             "converted": true, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -219,7 +227,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:23:04", 
             "converted": true, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -237,7 +245,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:23:10", 
             "converted": true, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -246,7 +254,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:23:11", 
             "converted": false, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -327,7 +335,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:23:37", 
             "converted": true, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -345,7 +353,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:23:42", 
             "converted": true, 
-            "option": 1
+            "option": 3
         }
     }, 
     {
@@ -354,7 +362,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:23:43", 
             "converted": true, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -417,7 +425,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:24:01", 
             "converted": true, 
-            "option": 1
+            "option": 3
         }
     }, 
     {
@@ -462,7 +470,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:24:08", 
             "converted": true, 
-            "option": 1
+            "option": 3
         }
     }, 
     {
@@ -543,7 +551,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:24:25", 
             "converted": true, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -615,7 +623,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:38:11", 
             "converted": false, 
-            "option": 1
+            "option": 3
         }
     }, 
     {
@@ -633,7 +641,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:38:15", 
             "converted": true, 
-            "option": 1
+            "option": 3
         }
     }, 
     {
@@ -642,7 +650,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:38:18", 
             "converted": true, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -669,7 +677,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:38:25", 
             "converted": false, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -714,7 +722,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:38:33", 
             "converted": true, 
-            "option": 1
+            "option": 3
         }
     }, 
     {
@@ -741,7 +749,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:38:39", 
             "converted": true, 
-            "option": 1
+            "option": 3
         }
     }, 
     {
@@ -777,7 +785,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:38:48", 
             "converted": true, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -795,7 +803,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:38:49", 
             "converted": true, 
-            "option": 1
+            "option": 3
         }
     }, 
     {
@@ -849,7 +857,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:38:59", 
             "converted": false, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -867,7 +875,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:39:05", 
             "converted": true, 
-            "option": 1
+            "option": 3
         }
     }, 
     {
@@ -876,7 +884,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:39:06", 
             "converted": true, 
-            "option": 1
+            "option": 3
         }
     }, 
     {
@@ -903,7 +911,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:39:09", 
             "converted": true, 
-            "option": 1
+            "option": 3
         }
     }, 
     {
@@ -930,7 +938,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:39:13", 
             "converted": false, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -948,7 +956,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:39:19", 
             "converted": false, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -975,7 +983,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:39:27", 
             "converted": true, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -984,7 +992,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:39:30", 
             "converted": true, 
-            "option": 1
+            "option": 3
         }
     }, 
     {
@@ -1020,7 +1028,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:39:36", 
             "converted": true, 
-            "option": 1
+            "option": 3
         }
     }, 
     {
@@ -1038,7 +1046,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:39:40", 
             "converted": true, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -1056,7 +1064,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:39:48", 
             "converted": true, 
-            "option": 1
+            "option": 3
         }
     }, 
     {
@@ -1074,7 +1082,7 @@
         "fields": {
             "timestamp": "2010-08-14 18:39:53", 
             "converted": true, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -1137,7 +1145,7 @@
         "fields": {
             "timestamp": "2010-08-14 19:09:00", 
             "converted": false, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -1146,7 +1154,7 @@
         "fields": {
             "timestamp": "2010-08-14 19:09:01", 
             "converted": true, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -1254,7 +1262,7 @@
         "fields": {
             "timestamp": "2010-08-14 19:09:26", 
             "converted": true, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -1281,7 +1289,7 @@
         "fields": {
             "timestamp": "2010-08-14 19:09:33", 
             "converted": false, 
-            "option": 1
+            "option": 3
         }
     }, 
     {
@@ -1299,7 +1307,7 @@
         "fields": {
             "timestamp": "2010-08-14 19:09:37", 
             "converted": false, 
-            "option": 1
+            "option": 3
         }
     }, 
     {
@@ -1317,7 +1325,7 @@
         "fields": {
             "timestamp": "2010-08-14 19:09:41", 
             "converted": false, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -1362,7 +1370,7 @@
         "fields": {
             "timestamp": "2010-08-14 19:09:52", 
             "converted": false, 
-            "option": 1
+            "option": 3
         }
     }, 
     {
@@ -1434,7 +1442,7 @@
         "fields": {
             "timestamp": "2010-08-14 19:10:05", 
             "converted": true, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -1551,7 +1559,7 @@
         "fields": {
             "timestamp": "2010-08-14 19:10:32", 
             "converted": false, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -1587,7 +1595,7 @@
         "fields": {
             "timestamp": "2010-08-14 19:10:40", 
             "converted": false, 
-            "option": 2
+            "option": 3
         }
     }, 
     {
@@ -1641,7 +1649,7 @@
         "fields": {
             "timestamp": "2010-08-14 19:10:54", 
             "converted": false, 
-            "option": 1
+            "option": 3
         }
     }
 ]
