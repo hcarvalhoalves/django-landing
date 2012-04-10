@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Django-landing by hcarvalhoalves</title>
+    
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Django-landing</h1>
+        <p>Landing, a simple A/B testing application for Django</p>
+        <p class="view"><a href="https://github.com/hcarvalhoalves/django-landing">View the Project on GitHub <small>hcarvalhoalves/django-landing</small></a></p>
+        <ul>
+          <li><a href="https://github.com/hcarvalhoalves/django-landing/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/hcarvalhoalves/django-landing/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/hcarvalhoalves/django-landing">Fork On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>About Landing</h1>
+
+<p>Landing is a simple Django application for implementing A/B tests on
+your site. The original concept was inspired by Vanity for Rails, but
+the implementation is different - better suited to how Django apps work.</p>
+
+<p>It can be plugged right into any working Django project, and be used to
+track visitor’s conversions according to any metric you want. It also
+generates on-the-fly reports for each experiment, easy to use by
+developers, designers and management alike.</p>
+
+<h2>To setup Landing for you Django project</h2>
+
+<ul>
+<li>  Add to your installed apps on `settings.py`</li>
+</ul><pre><code>INSTALLED_APPS = (
+    'django.contrib.sessions',
+    ...
+    'landing',
+)
+</code></pre>
+
+<p>Landing depends on `django.contrib.sessions`, so make sure it’s there
+too.</p>
+
+<ul>
+<li>  Add the URL routing for reports</li>
+</ul><pre><code>urlpatterns = patterns('',
+    ...
+    (r'^landing/', include('landing.urls')),
+)
+</code></pre>
+
+<p>You can also wrap the views to protect the reports under a login, use
+different templates or anything like that. Landing uses only 2 views:
+`landing.views.list` and `landing.views.report`.</p>
+
+<h2>To start using Landing on your project</h2>
+
+<ul>
+<li>  Register a new metric you want to track</li>
+</ul><p>At any module level code (I recommend the `views.py`):</p>
+
+<pre><code>from landing import register_metric
+
+signup_options = ['simple', 'complete']
+signup_metric = register_metric('Signup', 'Test 2 signup forms',
+                                options=signup_options)
+</code></pre>
+
+<p>The metric could also, in theory, be loaded with fixtures or via the
+admin.</p>
+
+<ul>
+<li>  Decorate your views for tracking the metric</li>
+</ul><pre><code>@track(signup_metric)
+def my_view(request):
+    if getattr(request, 'tracking', None):
+        # Do something with tracking
+</code></pre>
+
+<p>If the `request.tracking` object is present, it means we were able to
+track a visitor (cookies enabled), and also able to assign a random
+option - it’s acessible at `request.tracking.option`. For the next
+requests, this visitor will consistently be assigned the same option
+(until, of course, cookies are not valid anymore).</p>
+
+<p>Your code can then branch accordingly to each option that was assigned.
+Some use cases would include using different form classes, loading
+different templates, or showing different pieces of a template. It all
+depends on the variables you want to experiment with.</p>
+
+<p>Once your visitor reaches a checkpoint in your view (e.g., signup done),
+you track a conversion for it with:</p>
+
+<pre><code>@track(signup_metric)
+def signup(request):
+    ...
+    if form.is_valid():
+        request.tracking.track() # Record a conversion
+        ...
+</code></pre>
+
+<p>That’s it. From now on you can check the reports (if following this
+`README`, it would be available at `/landing/`) and see how your
+experiment progresses. It presents the conversion rates, the best option
+(with a confidence level of at least 90%) and also a graph for
+conversions by period, so you can see how conversions spread during the
+experiment period and quickly assess any biases.</p>
+
+<p>As the experiment progresses and reaches to a conclusion, you can have
+your code automaticaly select the optimal choice with something like:</p>
+
+<pre><code>form_options = {'simple': SimpleForm, 'complete': CompleteForm}
+
+def signup_form(request):
+    ...
+    if signup_metric.choice(): # Best, statistical relevant option
+        form_class = form_options.get(signup_metric.choice().value)
+        ... # Proceed, now with the proven best form ;)
+</code></pre>
+
+<hr><p>You can learn more about A/B testing and the statistics involved at:
+<a href="http://20bits.com/articles/hypothesis-testing-the-basics">http://20bits.com/articles/hypothesis-testing-the-basics</a>/</p>
+
+<p>The original GitHub project page is at:
+<a href="http://github.com/hcarvalhoalves/django-landing">http://github.com/hcarvalhoalves/django-landing</a></p>
+
+<p>About Vanity, our inspiration source: <a href="http://vanity.labnotes.org">http://vanity.labnotes.org</a>/</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/hcarvalhoalves">hcarvalhoalves</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
